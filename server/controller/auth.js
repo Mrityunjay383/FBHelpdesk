@@ -1,22 +1,27 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 const User = require("../model/user");
 
 exports.register = async (req, res) => {
-
   try {
+    const { name, email, password } = req.body;
 
-    const {name, email, password} = req.body;
-
-    if(!(name && email && password)){
-      res.status(404).send("All fields are required");
+    if (!(name && email && password)) {
+      res
+        .status(404)
+        .json({ success: false, errorMessage: "All fields are required" });
     }
 
     const existingUser = await User.findOne({ email });
-    if(existingUser){
-      res.status(401).send("User already exist");
+    if (existingUser) {
+      res
+        .status(401)
+        .json({
+          success: false,
+          errorMessage: "User already exist, please Login",
+        });
     }
 
     const encPassword = await bcrypt.hash(password, 10);
@@ -24,15 +29,15 @@ exports.register = async (req, res) => {
     const user = await User.create({
       name,
       email: email.toLowerCase(),
-      password: encPassword
+      password: encPassword,
     });
 
     //token
     const token = jwt.sign(
-      {user_id: user._id, email},
+      { user_id: user._id, email },
       process.env.SECRET_KEY,
       {
-        expiresIn: "2h"
+        expiresIn: "2h",
       }
     );
 
@@ -40,30 +45,40 @@ exports.register = async (req, res) => {
 
     user.password = undefined;
 
-    res.status(201).json(user);
+    // Setting Up cookies
+    const options = {
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      httpOnly: true,
+    };
 
+    res
+      .status(201)
+      .cookie("token", token, options)
+      .json({ success: true, user });
   } catch (e) {
     console.log(e);
   }
-
-}
+};
 
 exports.login = async (req, res) => {
-
   try {
+    const { email, password } = req.body;
 
-    const {email, password} = req.body;
+    if (!(email && password)) {
+      res
+        .status(404)
+        .json({ success: false, errorMessage: "All fields are required" });
+    }
 
     const user = await User.findOne({ email });
 
-    if(user && (await bcrypt.compare(password, user.password))){
-
+    if (user && (await bcrypt.compare(password, user.password))) {
       //token
       const token = jwt.sign(
-        {user_id: user._id, email},
+        { user_id: user._id, email },
         process.env.SECRET_KEY,
         {
-          expiresIn: "2h"
+          expiresIn: "2h",
         }
       );
 
@@ -71,22 +86,21 @@ exports.login = async (req, res) => {
 
       // Setting Up cookies
       const options = {
-        expires: new Date(Date.now() + 24*60*60*1000),
-        httpOnly: true
+        expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+        httpOnly: true,
       };
 
-      return res.status(200).cookie('token', token, options).json({
+      return res.status(200).cookie("token", token, options).json({
         success: true,
         token,
-        user
+        user,
       });
-
     }
 
-    res.status(400).send("Email or password incorrect");
-
+    res
+      .status(400)
+      .json({ success: false, errorMessage: "Email or password incorrect" });
   } catch (e) {
     console.log(e);
   }
-
-}
+};

@@ -1,0 +1,54 @@
+.authPage {
+    height: 100vh;
+    width: 100%;
+    background: #1E4D91;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.authSec {
+    background: #fff;
+    padding: 30px 50px 15px;
+    border-radius: 15px;
+    width: 28vw;
+    font-weight: 500;
+}
+
+.authSec h3 {
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.reqStar{
+    color: red;
+    font-size: 18px;
+}
+
+.PassEye {
+    position: relative;
+    top: -30px;
+    left: 42vh;
+    transform: translate(-50%);
+    cursor: pointer;
+}
+
+.subBtn {
+    background: #1E4D91;
+    color: #fff;
+    border-radius: 4px;
+}
+
+.toggle {
+    text-align: center;
+    margin-top: 35px;
+}
+
+.toggleBtn {
+    color: dodgerblue;
+    cursor: pointer;
+}
+
+.toggleBtn:hover {
+    text-decoration: underline;
+}
