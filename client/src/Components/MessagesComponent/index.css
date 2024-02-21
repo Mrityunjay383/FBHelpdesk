@@ -2,6 +2,8 @@
 .messages {
     background: #fff;
     width: 50vw;
+    border-right: 2px solid #E4E5E7;
+
 }
 
 .messages .topRow {
@@ -59,6 +61,11 @@
     border-radius: 8px;
     margin-bottom: 12px;
     font-weight: 500;
+    cursor: default;
+}
+
+.messages .mainCom .messagesList span:hover{
+    background: #f8f8f8;
 }
 
 .messages .mainCom .messageInp {

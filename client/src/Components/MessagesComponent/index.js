@@ -56,9 +56,10 @@ const MessagesComponent = () => {
 
       <div className={"mainCom"}>
         <div className={"messagesList"}>
-          {messages.map((message) => {
+          {messages.map((message, index) => {
             return message.type === "sent" || message.type === "received" ? (
               <span
+                key={index}
                 style={
                   message.type.includes("sent")
                     ? {
@@ -73,6 +74,7 @@ const MessagesComponent = () => {
               </span>
             ) : (
               <p
+                key={index}
                 style={
                   message.type.includes("sent")
                     ? { alignSelf: "flex-end" }
@@ -81,7 +83,7 @@ const MessagesComponent = () => {
               >
                 {message.type.includes("sent")
                   ? "Richard panel - "
-                  : "Username - "}
+                  : "{Username} - "}
                 {timestampToFormattedDate(message.timestamp)}
               </p>
             );

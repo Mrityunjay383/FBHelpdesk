@@ -5,3 +5,112 @@
     background: grey;
     overflow-y: hidden;
 }
+
+.details{
+    background: #EFF2F7;
+    width: 20vw;
+}
+
+.ProfileCom{
+    background: #fff;
+    /*height: 30vh;*/
+    padding: 35px 0;
+}
+
+.ProfileCom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px solid #E4E5E7;
+
+}
+
+.ProfileCom .imageSec img{
+    width: 70px;
+    /*height: 50px;*/
+    border-radius: 50%;
+}
+.ProfileCom .nameStatusSec h4{
+    font-weight: 700;
+}
+.ProfileCom .nameStatusSec .status{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ProfileCom .nameStatusSec .status p{
+    margin-bottom: 2px;
+    margin-left: 5px;
+    color: rgb(152, 151, 151);
+
+}
+
+
+.ProfileCom .nameStatusSec .status .dot{
+    background: #55A65D;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+}
+
+.ProfileCom .btnSec{
+    min-width: 60%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.ProfileCom .btnSec button{
+    border: 2px solid #E4E5E7;
+}
+.ProfileCom .btnSec button .btnIcon{
+    font-size: 18px;
+}
+
+.ProfileCom .btnSec button:hover{
+    border-color: #1E4D91;
+    color: #1E4D91;
+}
+.ProfileCom .btnSec button:hover > .btnIcon{
+    color: #1E4D91;
+}
+
+
+.cusDetailCom{
+    margin: 20px 10px;
+    padding: 10px 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+.cusDetailCom h4{
+    font-weight: 700;
+    font-size: 20px;
+}
+.cusDetailCom .delTable{
+    margin: 25px 0;
+}
+.cusDetailCom .delTable div{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.cusDetailCom .delTable div span:first-child{
+    color: rgb(152, 151, 151);
+
+}
+.cusDetailCom .delTable div span:last-child{
+    font-weight: 500;
+}
+
+.cusDetailCom .vmdLink{
+    color: #5388AF;
+    font-weight: bold;
+    cursor: pointer;
+}
+.cusDetailCom .vmdLink:hover{
+    text-decoration: underline;
+}
