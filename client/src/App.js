@@ -5,8 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 import { Auth } from "./service";
 import Dashboard from "./Pages/Dashboard";
-import Login from "./Components/Login";
 import AuthPage from "./Pages/AuthPage";
+import Messages from "./Pages/Messages";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -47,21 +47,35 @@ function App() {
       <Router>
         <ToastContainer />
         <div>
-          <Routes>
-            {/*Home Route have Landing Page */}
-            <Route
-              path="/"
-              element={
-                <div>
-                  {isLoggedIn ? (
-                    <Dashboard />
-                  ) : (
-                    <AuthPage setIsLoggedIn={setIsLoggedIn} />
-                  )}
-                </div>
-              }
-            />
-          </Routes>
+          {isDataLoaded && (
+            <Routes>
+              {/*Home Route have Landing Page */}
+              <Route
+                path="/"
+                element={
+                  <div>
+                    {isLoggedIn ? (
+                      <Dashboard />
+                    ) : (
+                      <AuthPage setIsLoggedIn={setIsLoggedIn} />
+                    )}
+                  </div>
+                }
+              />
+              <Route
+                path="/messages"
+                element={
+                  <div>
+                    {isLoggedIn ? (
+                      <Messages />
+                    ) : (
+                      <AuthPage setIsLoggedIn={setIsLoggedIn} />
+                    )}
+                  </div>
+                }
+              />
+            </Routes>
+          )}
         </div>
       </Router>
     </div>

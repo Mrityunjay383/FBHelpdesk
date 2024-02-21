@@ -1,0 +1,107 @@
+.conversations {
+    width: 26vw;
+    background: #fff;
+    border-right: 2px solid #E4E5E7;
+
+}
+
+.converTopCom {
+    display: flex;
+    align-items: center;
+    padding: 20px 25px;
+    justify-content: space-between;
+    /*box-shadow: 0 1px 6px 1px rgba(0, 0, 0, 0.2);*/
+    /*margin-bottom: 3px;*/
+    border-bottom: 2px solid #E4E5E7;
+
+}
+
+.converTopCom div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.converTopCom h4 {
+    margin: 0 0 4px 15px;
+    font-weight: 700;
+    font-size: 1.8em;
+}
+
+.converTopComIcon {
+    font-size: 25px;
+    color: #B7B7B7;
+}
+
+.converTopComIcon.refresh {
+    font-size: 30px;
+    color: #454648;
+    cursor: pointer;
+}
+.conversationsCom{
+    overflow-y: auto;
+    height: 90%;
+}
+.conversationsCom .indieCom {
+    padding: 20px 25px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.conversationsCom .indieCom.active, .conversationsCom .indieCom:hover  {
+    background: #EDEEF0;
+}
+
+.conversationsCom .indieCom .firstLine {
+    display: flex;
+    justify-content: space-between;
+}
+
+.conversationsCom .indieCom .firstLine .leftCom {
+    display: flex;
+}
+
+.conversationsCom .indieCom .firstLine .leftCom input {
+    margin-top: 18px;
+    border: 2px solid #98989A;
+    width: 20px;
+    height: 20px;
+}
+
+.conversationsCom .indieCom .firstLine .nameCat {
+    display: flex;
+    flex-direction: column;
+    margin-left: 12px;
+}
+
+.conversationsCom .indieCom .firstLine .nameCat span:first-child {
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.conversationsCom .indieCom .firstLine .nameCat span:last-child {
+    font-size: 17px;
+    font-weight: 600;
+    color: rgb(152, 151, 151);
+}
+
+.conversationsCom .indieCom .txtCom {
+    margin-top: 20px;
+}
+
+.conversationsCom .indieCom .txtCom p {
+    margin: 0;
+    font-weight: 500;
+}
+
+.conversationsCom .indieCom .txtCom p:first-child {
+    font-size: 16px;
+
+}
+
+.conversationsCom .indieCom .txtCom p:last-child {
+    color: rgb(152, 151, 151);
+    font-size: 16px;
+
+}
+
