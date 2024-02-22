@@ -3,6 +3,8 @@ import { ToastContainer } from "react-toastify";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
+import socketIOClient from "socket.io-client";
+
 import { Auth } from "./service";
 import Dashboard from "./Pages/Dashboard";
 import AuthPage from "./Pages/AuthPage";
@@ -23,7 +25,6 @@ function App() {
 
       if (res.status === 200) {
         await setUserData(res.data.user);
-        console.log(`#20245343232735 res.data.user`, res.data.user);
         await setIsLoggedIn(true);
       } else {
         await setUserData({ user_id: "", email: "" });
@@ -39,6 +40,14 @@ function App() {
   useEffect(() => {
     valLogin();
   }, [isLoggedIn]);
+
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const socket = socketIOClient("http://localhost:5000");
+
+    setSocket(socket);
+  }, []);
 
   return (
     <div className="App">
@@ -57,6 +66,7 @@ function App() {
                         userId={userData.user_id}
                         status={userData.facebook.status}
                         pageName={userData.facebook.page.name}
+                        socket={socket}
                       />
                     ) : (
                       <AuthPage setIsLoggedIn={setIsLoggedIn} />
@@ -69,7 +79,7 @@ function App() {
                 element={
                   <div>
                     {isLoggedIn ? (
-                      <Messages />
+                      <Messages socket={socket} />
                     ) : (
                       <AuthPage setIsLoggedIn={setIsLoggedIn} />
                     )}

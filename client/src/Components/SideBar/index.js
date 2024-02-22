@@ -4,12 +4,19 @@ import { HiUsers } from "react-icons/hi2";
 import { IoMdTrendingUp } from "react-icons/io";
 
 import "./index.css";
+import { useNavigate } from "react-router-dom";
 
 const SideBar = () => {
+  const navigate = useNavigate();
+
   return (
     <div className={"sidebar"}>
       <div className={"sbTop"}>
-        <img src={require("./../../Assets/logo.png")} alt={"logo"} />
+        <img
+          src={require("./../../Assets/logo.png")}
+          alt={"logo"}
+          onClick={() => navigate("/")}
+        />
         <div className={"sbTopIconCom active"}>
           <FaInbox className={"sbTopIcon"} />
         </div>

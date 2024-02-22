@@ -28,6 +28,7 @@
     flex-direction: column;
     overflow-y: auto;
     padding: 0 8px;
+    scroll-behavior: smooth;
 }
 
 /* For WebKit browsers (Chrome, Safari) */

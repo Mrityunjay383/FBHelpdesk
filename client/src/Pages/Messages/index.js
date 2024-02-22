@@ -9,9 +9,9 @@ import MessagesComponent from "../../Components/MessagesComponent";
 import "./index.css";
 import { Facebook } from "../../service";
 
-const Messages = () => {
-  const [conversations, setConversations] = useState([]);
-  const [activeConversationName, setActiveConversationName] = useState([]);
+const Messages = ({ socket }) => {
+  const [conversations, setConversations] = useState({});
+  const [activeConversationName, setActiveConversationName] = useState("");
   const [activeConversationId, setActiveConversationId] = useState("");
 
   const fetchConversations = async () => {
@@ -21,9 +21,11 @@ const Messages = () => {
       const fetchedConversations = res.data.conversations;
 
       setConversations(fetchedConversations);
-      if (fetchedConversations.length > 0) {
-        setActiveConversationName(fetchedConversations[0].name);
-        setActiveConversationId(fetchedConversations[0].id);
+
+      if (Object.keys(fetchedConversations).length > 0) {
+        const initialConId = Object.keys(fetchedConversations)[0];
+        setActiveConversationName(fetchedConversations[initialConId].name);
+        setActiveConversationId(initialConId);
       }
     }
   };
@@ -31,6 +33,12 @@ const Messages = () => {
   useEffect(() => {
     fetchConversations();
   }, []);
+
+  useEffect(() => {
+    socket.on("new_message", (data) => {
+      fetchConversations();
+    });
+  }, [socket]);
 
   return (
     <div className={"messagesPage"}>
@@ -44,6 +52,8 @@ const Messages = () => {
       <MessagesComponent
         activeConversationName={activeConversationName}
         activeConversationId={activeConversationId}
+        socket={socket}
+        fetchConversations={fetchConversations}
       />
 
       <div className={"details"}>
@@ -51,41 +61,53 @@ const Messages = () => {
           <div className={"imageSec mb-3"}>
             <img src={require("./../../Assets/userImg.png")} alt={"logo"} />
           </div>
-          <div className={"nameStatusSec"}>
-            <h4>{activeConversationName}</h4>
-            <div className={"status"}>
-              <div className={"dot"}></div>
-              <p>Offline</p>
+          {activeConversationId !== "" && (
+            <div className={"nameStatusSec"}>
+              <h4>{activeConversationName}</h4>
+              <div className={"status"}>
+                <div className={"dot"}></div>
+                <p>Offline</p>
+              </div>
             </div>
-          </div>
-          <div className={"btnSec mt-3"}>
-            <button className={"btn"}>
-              <SlCallEnd className={"btnIcon"} /> Call
-            </button>
-            <button className={"btn"}>
-              <HiMiniUserCircle className={"btnIcon"} /> Profile
-            </button>
-          </div>
+          )}
+          {activeConversationId !== "" && (
+            <div className={"btnSec mt-3"}>
+              <button className={"btn"}>
+                <SlCallEnd className={"btnIcon"} /> Call
+              </button>
+              <button className={"btn"}>
+                <HiMiniUserCircle className={"btnIcon"} /> Profile
+              </button>
+            </div>
+          )}
         </div>
 
-        <div className={"cusDetailCom"}>
-          <h4>Customer details</h4>
-          <div className={"delTable"}>
-            <div>
-              <span>Email</span>
-              <span>{"{Can't extract}"}</span>
+        {activeConversationId !== "" && (
+          <div className={"cusDetailCom"}>
+            <h4>Customer details</h4>
+            <div className={"delTable"}>
+              <div>
+                <span>Email</span>
+                <span>{"{Can't extract}"}</span>
+              </div>
+              <div>
+                <span>First Name</span>
+                <span>
+                  {activeConversationName !== "" &&
+                    activeConversationName.split(" ")[0]}
+                </span>
+              </div>
+              <div>
+                <span>Last Name</span>
+                <span>
+                  {activeConversationName !== "" &&
+                    activeConversationName.split(" ")[1]}
+                </span>
+              </div>
             </div>
-            <div>
-              <span>First Name</span>
-              <span>{activeConversationName.split(" ")[0]}</span>
-            </div>
-            <div>
-              <span>Last Name</span>
-              <span>{activeConversationName.split(" ")[1]}</span>
-            </div>
+            <p className={"vmdLink"}>View more details</p>
           </div>
-          <p className={"vmdLink"}>View more details</p>
-        </div>
+        )}
       </div>
     </div>
   );

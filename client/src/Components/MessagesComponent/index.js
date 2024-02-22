@@ -26,6 +26,8 @@ const timestampToFormattedDate = (timestamp) => {
 const MessagesComponent = ({
   activeConversationName,
   activeConversationId,
+  socket,
+  fetchConversations,
 }) => {
   const [messages, setMessages] = useState([]);
 
@@ -35,7 +37,6 @@ const MessagesComponent = ({
     });
 
     if (res.status === 200) {
-      console.log(`#202453869129 `, res.data.messages);
       setMessages(res.data.messages || []);
     }
   };
@@ -43,6 +44,16 @@ const MessagesComponent = ({
   useEffect(() => {
     fetchConversation();
   }, [activeConversationId]);
+
+  useEffect(() => {
+    socket.on("new_message", (data) => {
+      if (data.id == activeConversationId) {
+        setMessages((curr) => {
+          return [...curr, data.newMessage];
+        });
+      }
+    });
+  }, [socket]);
 
   const MessageLine = ({ message }) => {
     return (
@@ -95,14 +106,28 @@ const MessagesComponent = ({
       setMessages((curr) => {
         return [...curr, newMessage];
       });
+
+      fetchConversations();
     }
   };
+
+  function scrollToBottom() {
+    const messageBox = document.getElementById("messageBox");
+
+    console.log(`#202453113652685 messageBox`, messageBox.scrollHeight);
+    messageBox.scrollTop = messageBox.scrollHeight;
+  }
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   return (
     <div className={"messages"}>
       <div className={"topRow"}>{activeConversationName}</div>
 
       <div className={"mainCom"}>
-        <div className={"messagesList"}>
+        <div id="messageBox" className={"messagesList"}>
           {messages.map((message, index) => {
             const nextMessage = messages[index + 1];
 

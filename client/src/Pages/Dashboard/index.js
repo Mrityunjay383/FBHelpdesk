@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
 import { Facebook } from "../../service";
 import { toast } from "react-toastify";
 
-const Dashboard = ({ userId, status, pageName }) => {
+const Dashboard = ({ userId, status, pageName, socket }) => {
   const navigate = useNavigate();
 
   const [pageConnected, setPageConnected] = useState(status);
@@ -15,9 +15,15 @@ const Dashboard = ({ userId, status, pageName }) => {
       "Facebook Login",
       "width=600,height=400"
     );
-
-    // setPageConnected(true);
   };
+
+  useEffect(() => {
+    socket.on("auth_done", (data) => {
+      toast.success("Facebook Authentication Successful!");
+      setPageConnected(true);
+      pageName = data.pageName;
+    });
+  }, [socket]);
 
   const deleteIntegration = async () => {
     const res = await Facebook.deleteIntegration();

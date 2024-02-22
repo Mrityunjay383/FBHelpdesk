@@ -20,8 +20,10 @@ const Conversations = ({ conversations, activeConversationId }) => {
       </div>
 
       <div className={"conversationsCom"}>
-        {conversations.length > 0 &&
-          conversations.map((conversation, index) => {
+        {Object.keys(conversations).length > 0 ? (
+          Object.keys(conversations).map((conversationId, index) => {
+            const conversation = conversations[conversationId];
+
             return (
               <IndieConversation
                 key={index}
@@ -29,7 +31,10 @@ const Conversations = ({ conversations, activeConversationId }) => {
                 conversationDetail={conversation}
               />
             );
-          })}
+          })
+        ) : (
+          <div className={"indieCom"}>No Conversations yet</div>
+        )}
       </div>
     </div>
   );

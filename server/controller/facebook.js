@@ -1,7 +1,5 @@
 const axios = require("axios");
 const User = require("../model/user");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
 const facebookAppId = process.env.FACEBOOK_APP_ID;
 const facebookAppSecret = process.env.FACEBOOK_APP_SECRET;
@@ -19,6 +17,8 @@ exports.authRedirect = (req, res) => {
 
 exports.authCallback = async (req, res) => {
   const { code } = req.query;
+
+  const { io } = req.app;
 
   const { state } = req.query;
 
@@ -81,6 +81,10 @@ exports.authCallback = async (req, res) => {
     user.facebook = facebook;
     await user.save();
 
+    io.emit("auth_done", {
+      pageName: pages[0].name,
+    });
+
     res.send("Successfully authenticated. You can close this window.");
   } catch (error) {
     console.error("Error exchanging code for access token:", error);
@@ -105,6 +109,8 @@ exports.webhookGet = (req, res) => {
 exports.webhookPost = (req, res) => {
   const body = req.body;
 
+  const { io } = req.app;
+
   if (body.object === "page") {
     body.entry.forEach(async (entry) => {
       const webhookEvent = entry.messaging[0];
@@ -118,6 +124,8 @@ exports.webhookPost = (req, res) => {
         message: webhookEvent.message.text,
         type: "received",
       };
+
+      io.emit("new_message", { newMessage, id: webhookEvent.sender.id });
 
       if (user.facebook.messages[webhookEvent.sender.id]) {
         user.facebook.messages[webhookEvent.sender.id].push(newMessage);
@@ -158,7 +166,7 @@ exports.conversations = async (req, res) => {
 
     const messages = user.facebook.messages;
 
-    const conversations = [];
+    const conversations = {};
 
     for (let senderId of Object.keys(messages)) {
       const response = await axios.get(
@@ -171,15 +179,13 @@ exports.conversations = async (req, res) => {
         }
       );
 
-      conversations.push({
+      const messagesLength = messages[senderId].length;
+
+      conversations[senderId] = {
         name: response.data.name,
         email: response.data.email,
-        id: senderId,
-        lastMessage: messages[senderId]
-          .slice()
-          .reverse()
-          .find((message) => message.type === "received"),
-      });
+        lastMessage: messages[senderId][messagesLength - 1],
+      };
     }
 
     res.status(200).json({ success: true, conversations });
