@@ -3,6 +3,8 @@ import { toast, ToastContainer } from "react-toastify";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
+
+//importing socket for using web-sockets
 import socketIOClient from "socket.io-client";
 
 import { Auth } from "./service";
@@ -18,13 +20,12 @@ function App() {
     facebook: {},
   });
 
+  //Checking the user authentication
   const valLogin = async () => {
     try {
       const res = await Auth.root();
 
       if (res.status === 200 && res.data && res.data.user) {
-        // console.log(`#202453144639237 res.data.user`, res.data.user);
-
         await setUserData(res.data.user);
         await setIsLoggedIn(true);
       } else {
@@ -49,6 +50,7 @@ function App() {
       "https://fb-helpdesk-mrityunjay-2fb983a3f040.herokuapp.com"
     );
 
+    //storing the socket in the state variable
     setSocket(socket);
   }, []);
 

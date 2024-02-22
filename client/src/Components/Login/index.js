@@ -22,10 +22,12 @@ const Login = ({ setIsLoggedIn }) => {
       return toast.error("All fields must be Filled");
     }
 
+    //calling the login endpoint
     const res = await Auth.login(formData);
 
     if (res.status === 200) {
       toast.success("Login successful");
+      //storing the jwt token in the browser cookie
       Cookies.set("token", res.data.token);
       setIsLoggedIn(true);
     } else {

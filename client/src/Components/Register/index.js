@@ -33,14 +33,17 @@ const Register = ({ setIsLoggedIn }) => {
       return toast.error("All fields must be Filled");
     }
 
+    //validating email input, it should follow a valid email pattern
     if (!validateEmail(formData.email)) {
       return toast.error("Please enter a valid email");
     }
 
+    //calling the register endpoint
     const res = await Auth.register(formData);
 
     if (res.status === 201) {
       toast.success("Account created successfully");
+      //storing the jwt token in the browser cookie
       Cookies.set("token", res.data.token);
       setIsLoggedIn(true);
     } else {

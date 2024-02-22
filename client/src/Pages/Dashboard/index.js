@@ -11,6 +11,7 @@ const Dashboard = ({ userId, status, pageName, socket }) => {
 
   const [pageConnected, setPageConnected] = useState(status);
 
+  //creating a new browser window, where facebook authentication will be handled
   const handleFacebookAuth = async () => {
     window.open(
       `${Facebook.uri}?userId=${userId}`,
@@ -23,6 +24,7 @@ const Dashboard = ({ userId, status, pageName, socket }) => {
     setPageConnected(status);
   }, [status]);
 
+  //Socket useEffect
   useEffect(() => {
     socket.on("auth_done", (data) => {
       toast.success("Facebook Authentication Successful!");
