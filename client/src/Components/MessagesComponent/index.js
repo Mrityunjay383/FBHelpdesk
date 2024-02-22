@@ -1,34 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IoSendSharp } from "react-icons/io5";
 
 import "./index.css";
-
-const messages = [
-  {
-    type: "received",
-    text: "Is it in stock right now?",
-  },
-  {
-    type: "received",
-    text: "I want to buy",
-  },
-  {
-    type: "receiveTime",
-    timestamp: 1708482817000,
-  },
-  {
-    type: "sent",
-    text: "We have 3 left in stock!",
-  },
-  {
-    type: "sent",
-    text: "If you order before 8PM we can ship it today",
-  },
-  {
-    type: "sentTime",
-    timestamp: 1708483723000,
-  },
-];
+import { Facebook } from "../../service";
 
 const timestampToFormattedDate = (timestamp) => {
   const date = new Date(timestamp);
@@ -49,51 +23,143 @@ const timestampToFormattedDate = (timestamp) => {
   return `${month} ${day}, ${formattedHours}:${formattedMinutes} ${ampm}`;
 };
 
-const MessagesComponent = () => {
+const MessagesComponent = ({
+  activeConversationName,
+  activeConversationId,
+}) => {
+  const [messages, setMessages] = useState([]);
+
+  const fetchConversation = async () => {
+    const res = await Facebook.indieConversation({
+      conversationId: activeConversationId,
+    });
+
+    if (res.status === 200) {
+      console.log(`#202453869129 `, res.data.messages);
+      setMessages(res.data.messages || []);
+    }
+  };
+
+  useEffect(() => {
+    fetchConversation();
+  }, [activeConversationId]);
+
+  const MessageLine = ({ message }) => {
+    return (
+      <span
+        style={
+          message.type === "sent"
+            ? {
+                alignSelf: "flex-end",
+                background: "#1E4D91",
+                color: "#fff",
+              }
+            : { alignSelf: "flex-start" }
+        }
+      >
+        {message.message}
+      </span>
+    );
+  };
+
+  const TimePara = ({ message }) => {
+    return (
+      <p
+        style={
+          message.type === "sent"
+            ? { marginTop: "0" }
+            : { alignSelf: "flex-start" }
+        }
+      >
+        {message.type === "sent"
+          ? "Richard panel - "
+          : `${activeConversationName} - `}
+        {timestampToFormattedDate(message.timestamp)}
+      </p>
+    );
+  };
+
+  const sendMessage = async (messageText) => {
+    const newMessage = {
+      message: messageText,
+      timestamp: new Date(),
+      type: "sent",
+    };
+
+    const res = await Facebook.sendMessage({
+      newMessage,
+      conversationId: activeConversationId,
+    });
+
+    if (res.status === 200) {
+      setMessages((curr) => {
+        return [...curr, newMessage];
+      });
+    }
+  };
   return (
     <div className={"messages"}>
-      <div className={"topRow"}>Amit RG</div>
+      <div className={"topRow"}>{activeConversationName}</div>
 
       <div className={"mainCom"}>
         <div className={"messagesList"}>
           {messages.map((message, index) => {
-            return message.type === "sent" || message.type === "received" ? (
-              <span
-                key={index}
-                style={
-                  message.type.includes("sent")
-                    ? {
-                        alignSelf: "flex-end",
-                        background: "#1E4D91",
-                        color: "#fff",
-                      }
-                    : { alignSelf: "flex-start" }
-                }
-              >
-                {message.text}
-              </span>
-            ) : (
-              <p
-                key={index}
-                style={
-                  message.type.includes("sent")
-                    ? { alignSelf: "flex-end" }
-                    : { alignSelf: "flex-start" }
-                }
-              >
-                {message.type.includes("sent")
-                  ? "Richard panel - "
-                  : "{Username} - "}
-                {timestampToFormattedDate(message.timestamp)}
-              </p>
-            );
+            const nextMessage = messages[index + 1];
+
+            if (index !== messages.length - 1) {
+              if (nextMessage.type !== message.type) {
+                return (
+                  <div
+                    key={index}
+                    style={
+                      message.type === "sent"
+                        ? {
+                            alignSelf: "flex-end",
+                            display: "flex",
+                            flexDirection: "column",
+                          }
+                        : { alignSelf: "flex-start" }
+                    }
+                  >
+                    <MessageLine message={message} />
+                    <TimePara message={message} />
+                  </div>
+                );
+              }
+
+              return <MessageLine key={index} message={message} />;
+            } else {
+              return (
+                <div
+                  key={index}
+                  style={
+                    message.type === "sent"
+                      ? {
+                          alignSelf: "flex-end",
+                          display: "flex",
+                          flexDirection: "column",
+                        }
+                      : { alignSelf: "flex-start" }
+                  }
+                >
+                  <MessageLine message={message} />
+                  <TimePara message={message} />
+                </div>
+              );
+            }
           })}
         </div>
         <div className={"messageInp"}>
           <input
             type="text"
             className="form-control"
-            placeholder={"Message Amit RG"}
+            placeholder={`Message ${activeConversationName}`}
+            onKeyDown={(e) => {
+              if (e.keyCode === 13) {
+                sendMessage(e.target.value);
+                e.target.value = "";
+              }
+            }}
           />
           <div className={"btn"}>
             <IoSendSharp className={"sendIcon"} />

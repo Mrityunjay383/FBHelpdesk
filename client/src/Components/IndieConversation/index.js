@@ -1,6 +1,32 @@
 import React from "react";
 
-const IndieConversation = ({ active }) => {
+const IndieConversation = ({ active, conversationDetail }) => {
+  const formatTimestamp = (timestamp) => {
+    const date = new Date(timestamp);
+
+    // Getting the current time
+    const currentTime = new Date();
+
+    // Calculating the time difference in milliseconds
+    const timeDifference = currentTime - date;
+
+    const minutes = Math.floor(timeDifference / (1000 * 60));
+
+    if (minutes > 59) {
+      // If the time difference is greater than 59 minutes, returning actual time in hh:mm format
+      return date.toLocaleTimeString("en-US", {
+        hour12: false,
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } else if (minutes > 1440) {
+      // If the time difference is greater than 24 hours (1440 minutes), returning "yesterday"
+      return "yesterday";
+    } else {
+      return `${minutes.toString()}m`;
+    }
+  };
+
   return (
     <div className={`indieCom ${active && "active"}`}>
       <div className={"firstLine"}>
@@ -9,16 +35,17 @@ const IndieConversation = ({ active }) => {
             <input type="checkbox" className="form-check-input" />
           </div>
           <div className={"nameCat"}>
-            <span>Amit RG</span>
+            <span>{conversationDetail.name}</span>
             <span>Facebook DM</span>
           </div>
         </div>
 
-        <div className={"time"}>10m</div>
+        <div className={"time"}>
+          {formatTimestamp(conversationDetail.lastMessage.timestamp)}
+        </div>
       </div>
       <div className={"txtCom"}>
-        <p>Awesome Product</p>
-        <p>Hey There! I probably did one of the best product...</p>
+        <p>{conversationDetail.lastMessage.message}</p>
       </div>
     </div>
   );

@@ -1,9 +1,8 @@
 
 .messages {
     background: #fff;
-    width: 50vw;
+    width: 54vw;
     border-right: 2px solid #E4E5E7;
-
 }
 
 .messages .topRow {
@@ -62,6 +61,20 @@
     margin-bottom: 12px;
     font-weight: 500;
     cursor: default;
+}
+
+.messages .mainCom .messagesList div{
+    margin-top: 12px;
+}
+.messages .mainCom .messagesList div p{
+    margin-top: 22px;
+    font-weight: 500;
+    font-size: 15px;
+    color: rgb(152, 151, 151);
+    margin-left: 5px;
+    display: flex;
+    flex-direction: column;
+    /*text-align: right;*/
 }
 
 .messages .mainCom .messagesList span:hover{

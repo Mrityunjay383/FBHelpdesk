@@ -1,8 +1,7 @@
 .conversations {
-    width: 26vw;
+    width: 21vw;
     background: #fff;
     border-right: 2px solid #E4E5E7;
-
 }
 
 .converTopCom {
@@ -38,17 +37,19 @@
     color: #454648;
     cursor: pointer;
 }
-.conversationsCom{
+
+.conversationsCom {
     overflow-y: auto;
     height: 90%;
 }
+
 .conversationsCom .indieCom {
     padding: 20px 25px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
 
-.conversationsCom .indieCom.active, .conversationsCom .indieCom:hover  {
+.conversationsCom .indieCom.active, .conversationsCom .indieCom:hover {
     background: #EDEEF0;
 }
 

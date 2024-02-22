@@ -22,10 +22,8 @@ function App() {
       const res = await Auth.root();
 
       if (res.status === 200) {
-        await setUserData({
-          user_id: res.data.user.user_id,
-          email: res.data.user.email,
-        });
+        await setUserData(res.data.user);
+        console.log(`#20245343232735 res.data.user`, res.data.user);
         await setIsLoggedIn(true);
       } else {
         await setUserData({ user_id: "", email: "" });
@@ -55,7 +53,11 @@ function App() {
                 element={
                   <div>
                     {isLoggedIn ? (
-                      <Dashboard />
+                      <Dashboard
+                        userId={userData.user_id}
+                        status={userData.facebook.status}
+                        pageName={userData.facebook.page.name}
+                      />
                     ) : (
                       <AuthPage setIsLoggedIn={setIsLoggedIn} />
                     )}

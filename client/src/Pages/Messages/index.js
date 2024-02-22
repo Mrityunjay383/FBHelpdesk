@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SlCallEnd } from "react-icons/sl";
 import { HiMiniUserCircle } from "react-icons/hi2";
 
@@ -7,15 +7,44 @@ import Conversations from "../../Components/Conversations";
 import MessagesComponent from "../../Components/MessagesComponent";
 
 import "./index.css";
+import { Facebook } from "../../service";
 
 const Messages = () => {
+  const [conversations, setConversations] = useState([]);
+  const [activeConversationName, setActiveConversationName] = useState([]);
+  const [activeConversationId, setActiveConversationId] = useState("");
+
+  const fetchConversations = async () => {
+    const res = await Facebook.conversations();
+
+    if (res.status === 200) {
+      const fetchedConversations = res.data.conversations;
+
+      setConversations(fetchedConversations);
+      if (fetchedConversations.length > 0) {
+        setActiveConversationName(fetchedConversations[0].name);
+        setActiveConversationId(fetchedConversations[0].id);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchConversations();
+  }, []);
+
   return (
     <div className={"messagesPage"}>
       <SideBar />
 
-      <Conversations />
+      <Conversations
+        conversations={conversations}
+        activeConversationId={activeConversationId}
+      />
 
-      <MessagesComponent />
+      <MessagesComponent
+        activeConversationName={activeConversationName}
+        activeConversationId={activeConversationId}
+      />
 
       <div className={"details"}>
         <div className={"ProfileCom"}>
@@ -23,7 +52,7 @@ const Messages = () => {
             <img src={require("./../../Assets/userImg.png")} alt={"logo"} />
           </div>
           <div className={"nameStatusSec"}>
-            <h4>Amit RG</h4>
+            <h4>{activeConversationName}</h4>
             <div className={"status"}>
               <div className={"dot"}></div>
               <p>Offline</p>
@@ -44,15 +73,15 @@ const Messages = () => {
           <div className={"delTable"}>
             <div>
               <span>Email</span>
-              <span>amit@richpanel.com</span>
+              <span>{"{Can't extract}"}</span>
             </div>
             <div>
               <span>First Name</span>
-              <span>Amit</span>
+              <span>{activeConversationName.split(" ")[0]}</span>
             </div>
             <div>
               <span>Last Name</span>
-              <span>RG</span>
+              <span>{activeConversationName.split(" ")[1]}</span>
             </div>
           </div>
           <p className={"vmdLink"}>View more details</p>

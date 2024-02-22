@@ -29,3 +29,19 @@ export const Auth = {
     return request("GET", "/auth/logout");
   },
 };
+
+export const Facebook = {
+  uri: "https://7468-223-178-99-249.ngrok-free.app/facebook",
+  deleteIntegration: () => {
+    return request("GET", "/facebook/deleteIntegration");
+  },
+  conversations: () => {
+    return request("GET", "/facebook/conversations");
+  },
+  indieConversation: (data) => {
+    return request("POST", "/facebook/indieConversations", data);
+  },
+  sendMessage: (data) => {
+    return request("POST", "/facebook/sendMessage", data);
+  },
+};

@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { HiMenuAlt1 } from "react-icons/hi";
 import { MdRefresh } from "react-icons/md";
 
-import "./index.css";
 import IndieConversation from "../IndieConversation";
 
-const Conversations = () => {
+import "./index.css";
+
+const Conversations = ({ conversations, activeConversationId }) => {
   return (
     <div className={"conversations"}>
       <div className={"converTopCom"}>
@@ -19,8 +20,16 @@ const Conversations = () => {
       </div>
 
       <div className={"conversationsCom"}>
-        <IndieConversation active={true} />
-        <IndieConversation active={false} />
+        {conversations.length > 0 &&
+          conversations.map((conversation, index) => {
+            return (
+              <IndieConversation
+                key={index}
+                active={activeConversationId === conversation.id}
+                conversationDetail={conversation}
+              />
+            );
+          })}
       </div>
     </div>
   );
