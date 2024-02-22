@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
+
 import { Auth } from "../../service";
 
 const Login = ({ setIsLoggedIn }) => {
@@ -24,6 +26,7 @@ const Login = ({ setIsLoggedIn }) => {
 
     if (res.status === 200) {
       toast.success("Login successful");
+      Cookies.set("token", res.data.token);
       setIsLoggedIn(true);
     } else {
       console.log(`#202324717457861 Error`, res);

@@ -16,12 +16,10 @@ exports.register = async (req, res) => {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      res
-        .status(401)
-        .json({
-          success: false,
-          errorMessage: "User already exist, please Login",
-        });
+      res.status(401).json({
+        success: false,
+        errorMessage: "User already exist, please Login",
+      });
     }
 
     const encPassword = await bcrypt.hash(password, 10);
@@ -45,16 +43,7 @@ exports.register = async (req, res) => {
 
     user.password = undefined;
 
-    // Setting Up cookies
-    const options = {
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-      httpOnly: true,
-    };
-
-    res
-      .status(201)
-      .cookie("token", token, options)
-      .json({ success: true, user });
+    res.status(201).json({ success: true, token });
   } catch (e) {
     console.log(e);
   }
@@ -84,16 +73,9 @@ exports.login = async (req, res) => {
 
       user.password = undefined;
 
-      // Setting Up cookies
-      const options = {
-        expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-        httpOnly: true,
-      };
-
-      return res.status(200).cookie("token", token, options).json({
+      return res.status(200).json({
         success: true,
         token,
-        user,
       });
     }
 

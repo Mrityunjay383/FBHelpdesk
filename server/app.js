@@ -17,7 +17,10 @@ const server = http.createServer(app);
 //creating a new socket server
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000"],
+    origin: [
+      "http://localhost:3000",
+      "https://fb-helpdesk-mrityunjay.netlify.app",
+    ],
     methods: ["GET", "POST"],
   },
 });
@@ -30,7 +33,10 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: ["http://localhost:3000"], //change origin based on domain main of the application
+    origin: [
+      "http://localhost:3000",
+      "https://fb-helpdesk-mrityunjay.netlify.app",
+    ], //change origin based on domain main of the application
     optionsSuccessStatus: 200,
     credentials: true,
   })

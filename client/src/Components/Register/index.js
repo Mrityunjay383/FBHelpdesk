@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
+
 import { Auth } from "../../service";
 
 const Register = ({ setIsLoggedIn }) => {
@@ -39,6 +41,7 @@ const Register = ({ setIsLoggedIn }) => {
 
     if (res.status === 201) {
       toast.success("Account created successfully");
+      Cookies.set("token", res.data.token);
       setIsLoggedIn(true);
     } else {
       console.log(`#202324717457861 Error`, res);

@@ -1,9 +1,19 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
-const baseUrl = "http://localhost:5000";
+const baseUrl = "https://fb-helpdesk-mrityunjay-2fb983a3f040.herokuapp.com";
+// const baseUrl = "http://localhost:5000";
 
 const request = async (method, url, data) => {
+  const { token } = Cookies.get();
+
+  let headers = {};
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   const config = {
+    headers,
     validateStatus: false,
     withCredentials: true,
   };
@@ -28,7 +38,7 @@ export const Auth = {
 };
 
 export const Facebook = {
-  uri: "https://6683-223-178-99-249.ngrok-free.app/facebook",
+  uri: "https://fb-helpdesk-mrityunjay-2fb983a3f040.herokuapp.com/facebook",
   deleteIntegration: () => {
     return request("GET", "/facebook/deleteIntegration");
   },

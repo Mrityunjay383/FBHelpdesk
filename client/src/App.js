@@ -1,11 +1,6 @@
 import "./App.css";
-import { ToastContainer } from "react-toastify";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  useNavigate,
-} from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 import socketIOClient from "socket.io-client";
@@ -33,6 +28,7 @@ function App() {
         await setUserData(res.data.user);
         await setIsLoggedIn(true);
       } else {
+        // toast.error(res.data);
         await setUserData({ user_id: "", email: "", facebook: {} });
         await setIsLoggedIn(false);
       }
@@ -49,7 +45,9 @@ function App() {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const socket = socketIOClient("http://localhost:5000");
+    const socket = socketIOClient(
+      "https://fb-helpdesk-mrityunjay-2fb983a3f040.herokuapp.com"
+    );
 
     setSocket(socket);
   }, []);

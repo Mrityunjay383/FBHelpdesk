@@ -4,7 +4,7 @@ const User = require("../model/user");
 const facebookAppId = process.env.FACEBOOK_APP_ID;
 const facebookAppSecret = process.env.FACEBOOK_APP_SECRET;
 const redirectUri =
-  "https://6683-223-178-99-249.ngrok-free.app/facebook/callback";
+  "https://fb-helpdesk-mrityunjay-2fb983a3f040.herokuapp.com/facebook/callback";
 const verificationToken = process.env.SECRET_KEY;
 
 exports.authRedirect = (req, res) => {

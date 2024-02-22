@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Login from "../../Components/Login";
-import Index from "../../Components/Register";
 
 import "./index.css";
+import Register from "../../Components/Register";
 
 const AuthPage = ({ setIsLoggedIn }) => {
   const [showLogin, setShowLogin] = useState(true);
@@ -14,7 +14,7 @@ const AuthPage = ({ setIsLoggedIn }) => {
           {showLogin ? (
             <Login setIsLoggedIn={setIsLoggedIn} />
           ) : (
-            <Index setIsLoggedIn={setIsLoggedIn} />
+            <Register setIsLoggedIn={setIsLoggedIn} />
           )}
         </div>
 
