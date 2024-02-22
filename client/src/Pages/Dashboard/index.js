@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 const Dashboard = ({ userId, status, pageName, socket }) => {
   const navigate = useNavigate();
 
+  const [fetchedPageName, setFetchedPageName] = useState(pageName);
+
   const [pageConnected, setPageConnected] = useState(status);
 
   const handleFacebookAuth = async () => {
@@ -18,10 +20,14 @@ const Dashboard = ({ userId, status, pageName, socket }) => {
   };
 
   useEffect(() => {
+    setPageConnected(status);
+  }, [status]);
+
+  useEffect(() => {
     socket.on("auth_done", (data) => {
       toast.success("Facebook Authentication Successful!");
       setPageConnected(true);
-      pageName = data.pageName;
+      setFetchedPageName(data.pageName);
     });
   }, [socket]);
 
@@ -48,7 +54,9 @@ const Dashboard = ({ userId, status, pageName, socket }) => {
           </button>
         ) : (
           <div>
-            <h5 className={"mt-5"}>Integrated Page: {pageName}</h5>
+            <h5 className={"mt-5"}>
+              Integrated Page: {fetchedPageName !== "" && fetchedPageName}
+            </h5>
             <button
               className="btn btn-danger w-100 mt-3"
               onClick={deleteIntegration}

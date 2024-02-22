@@ -1,6 +1,11 @@
 import "./App.css";
 import { ToastContainer } from "react-toastify";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 import socketIOClient from "socket.io-client";
@@ -11,26 +16,26 @@ import AuthPage from "./Pages/AuthPage";
 import Messages from "./Pages/Messages";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState({
     user_id: "",
     email: "",
+    facebook: {},
   });
-
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   const valLogin = async () => {
     try {
       const res = await Auth.root();
 
-      if (res.status === 200) {
+      if (res.status === 200 && res.data && res.data.user) {
+        // console.log(`#202453144639237 res.data.user`, res.data.user);
+
         await setUserData(res.data.user);
         await setIsLoggedIn(true);
       } else {
-        await setUserData({ user_id: "", email: "" });
+        await setUserData({ user_id: "", email: "", facebook: {} });
         await setIsLoggedIn(false);
       }
-      setIsDataLoaded(true);
     } catch (err) {
       console.log(`#202321419122932 err`, err);
       await setIsLoggedIn(false);
@@ -54,40 +59,44 @@ function App() {
       <Router>
         <ToastContainer />
         <div>
-          {isDataLoaded && (
-            <Routes>
-              {/*Home Route have Landing Page */}
-              <Route
-                path="/"
-                element={
-                  <div>
-                    {isLoggedIn ? (
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <div>
+                  {isLoggedIn ? (
+                    userData.user_id !== "" &&
+                    userData.facebook !== {} && (
                       <Dashboard
                         userId={userData.user_id}
                         status={userData.facebook.status}
-                        pageName={userData.facebook.page.name}
+                        pageName={
+                          userData.facebook.page
+                            ? userData.facebook.page.name
+                            : ""
+                        }
                         socket={socket}
                       />
-                    ) : (
-                      <AuthPage setIsLoggedIn={setIsLoggedIn} />
-                    )}
-                  </div>
-                }
-              />
-              <Route
-                path="/messages"
-                element={
-                  <div>
-                    {isLoggedIn ? (
-                      <Messages socket={socket} />
-                    ) : (
-                      <AuthPage setIsLoggedIn={setIsLoggedIn} />
-                    )}
-                  </div>
-                }
-              />
-            </Routes>
-          )}
+                    )
+                  ) : (
+                    <AuthPage setIsLoggedIn={setIsLoggedIn} />
+                  )}
+                </div>
+              }
+            />
+            <Route
+              path="/messages"
+              element={
+                <div>
+                  {isLoggedIn ? (
+                    <Messages socket={socket} />
+                  ) : (
+                    <AuthPage setIsLoggedIn={setIsLoggedIn} />
+                  )}
+                </div>
+              }
+            />
+          </Routes>
         </div>
       </Router>
     </div>

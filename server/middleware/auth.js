@@ -19,7 +19,12 @@ const valToken = async (req, res, next) => {
 
     const user = await User.findOne({ _id: userData.user_id }).lean();
 
-    const facebook = { ...user.facebook, access_token: undefined };
+    const facebook = {
+      ...user.facebook,
+      access_token: undefined,
+      messages: undefined,
+    };
+    facebook.page.access_token = undefined;
 
     req.userData = { ...userData, facebook };
 

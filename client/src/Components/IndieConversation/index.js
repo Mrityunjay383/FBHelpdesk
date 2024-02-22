@@ -2,6 +2,8 @@ import React from "react";
 
 const IndieConversation = ({ active, conversationDetail }) => {
   const formatTimestamp = (timestamp) => {
+    timestamp -= 1000;
+
     const date = new Date(timestamp);
 
     // Getting the current time

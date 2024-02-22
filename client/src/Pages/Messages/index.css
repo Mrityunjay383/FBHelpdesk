@@ -49,7 +49,7 @@
 
 
 .ProfileCom .nameStatusSec .status .dot{
-    background: #55A65D;
+    background: rgb(152, 151, 151);
     width: 9px;
     height: 9px;
     border-radius: 50%;

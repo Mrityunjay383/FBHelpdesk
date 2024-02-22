@@ -15,7 +15,7 @@ const SideBar = () => {
         <img
           src={require("./../../Assets/logo.png")}
           alt={"logo"}
-          onClick={() => navigate("/")}
+          onClick={() => (window.location = "/")}
         />
         <div className={"sbTopIconCom active"}>
           <FaInbox className={"sbTopIcon"} />

@@ -25,13 +25,10 @@ export const Auth = {
   login: (data) => {
     return request("POST", `/auth/login`, data);
   },
-  logout: () => {
-    return request("GET", "/auth/logout");
-  },
 };
 
 export const Facebook = {
-  uri: "https://7468-223-178-99-249.ngrok-free.app/facebook",
+  uri: "https://6683-223-178-99-249.ngrok-free.app/facebook",
   deleteIntegration: () => {
     return request("GET", "/facebook/deleteIntegration");
   },

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { HiMenuAlt1 } from "react-icons/hi";
 import { MdRefresh } from "react-icons/md";
 
@@ -6,7 +6,11 @@ import IndieConversation from "../IndieConversation";
 
 import "./index.css";
 
-const Conversations = ({ conversations, activeConversationId }) => {
+const Conversations = ({
+  conversations,
+  activeConversationId,
+  setActiveConversationId,
+}) => {
   return (
     <div className={"conversations"}>
       <div className={"converTopCom"}>
@@ -27,6 +31,7 @@ const Conversations = ({ conversations, activeConversationId }) => {
             return (
               <IndieConversation
                 key={index}
+                onClick={() => setActiveConversationId(conversationId)}
                 active={activeConversationId === conversation.id}
                 conversationDetail={conversation}
               />

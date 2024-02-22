@@ -47,6 +47,7 @@ const Messages = ({ socket }) => {
       <Conversations
         conversations={conversations}
         activeConversationId={activeConversationId}
+        setActiveConversationId={setActiveConversationId}
       />
 
       <MessagesComponent

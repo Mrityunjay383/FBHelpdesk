@@ -53,7 +53,7 @@ const MessagesComponent = ({
         });
       }
     });
-  }, [socket]);
+  }, [socket, activeConversationId]);
 
   const MessageLine = ({ message }) => {
     return (
@@ -93,7 +93,7 @@ const MessagesComponent = ({
   const sendMessage = async (messageText) => {
     const newMessage = {
       message: messageText,
-      timestamp: new Date(),
+      timestamp: new Date().getTime(),
       type: "sent",
     };
 
@@ -113,8 +113,6 @@ const MessagesComponent = ({
 
   function scrollToBottom() {
     const messageBox = document.getElementById("messageBox");
-
-    console.log(`#202453113652685 messageBox`, messageBox.scrollHeight);
     messageBox.scrollTop = messageBox.scrollHeight;
   }
 
