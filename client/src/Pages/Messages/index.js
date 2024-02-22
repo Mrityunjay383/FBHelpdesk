@@ -48,6 +48,7 @@ const Messages = ({ socket }) => {
         conversations={conversations}
         activeConversationId={activeConversationId}
         setActiveConversationId={setActiveConversationId}
+        setActiveConversationName={setActiveConversationName}
       />
 
       <MessagesComponent

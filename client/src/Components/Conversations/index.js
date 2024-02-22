@@ -10,6 +10,7 @@ const Conversations = ({
   conversations,
   activeConversationId,
   setActiveConversationId,
+  setActiveConversationName,
 }) => {
   return (
     <div className={"conversations"}>
@@ -31,7 +32,10 @@ const Conversations = ({
             return (
               <IndieConversation
                 key={index}
-                onClick={() => setActiveConversationId(conversationId)}
+                onClick={() => {
+                  setActiveConversationId(conversationId);
+                  setActiveConversationName(conversation.name);
+                }}
                 active={activeConversationId === conversation.id}
                 conversationDetail={conversation}
               />

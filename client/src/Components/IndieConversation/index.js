@@ -1,6 +1,6 @@
 import React from "react";
 
-const IndieConversation = ({ active, conversationDetail }) => {
+const IndieConversation = ({ active, conversationDetail, onClick }) => {
   const formatTimestamp = (timestamp) => {
     timestamp -= 1000;
 
@@ -30,7 +30,7 @@ const IndieConversation = ({ active, conversationDetail }) => {
   };
 
   return (
-    <div className={`indieCom ${active && "active"}`}>
+    <div className={`indieCom ${active && "active"}`} onClick={onClick}>
       <div className={"firstLine"}>
         <div className={"leftCom"}>
           <div className="form-check">
